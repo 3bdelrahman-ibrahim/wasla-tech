@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cleo Cart - Checkout</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #ff8b32;
+        --secondary-color: #ff6f00;
+        --background-color: #f8fafc;
+        --border-color: #e5e7eb;
+      }
+
+      body {
+        background-color: var(--background-color);
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      }
+
+      .navbar {
+        background-color: white !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-brand {
+        font-weight: 600;
+        color: var(--primary-color) !important;
+      }
+
+      .nav-link {
+        color: #4b5563 !important;
+        font-weight: 500;
+      }
+
+      .nav-link:hover {
+        color: var(--primary-color) !important;
+      }
+
+      .checkout-container {
+        background-color: white;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+      }
+
+      .section-title {
+        color: #1f2937;
+        font-weight: 600;
+        margin-bottom: 2rem;
+      }
+
+      .cart-item {
+        border-bottom: 1px solid var(--border-color);
+        padding: 1rem 0;
+      }
+
+      .cart-item:last-child {
+        border-bottom: none;
+      }
+
+      .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .quantity-btn {
+        background-color: var(--background-color);
+        border: none;
+        border-radius: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+
+      .quantity-btn:hover {
+        background-color: var(--border-color);
+      }
+
+      .remove-item {
+        color: #ef4444;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+
+      .remove-item:hover {
+        opacity: 0.8;
+      }
+
+      .form-control {
+        border: 1px solid var(--border-color);
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+      }
+
+      .btn-primary:hover {
+        background-color: var(--secondary-color);
+      }
+
+      .total-section {
+        background-color: var(--background-color);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-top: 1rem;
+      }
+
+      .cart-summary {
+        font-size: 0.875rem;
+        color: #6b7280;
+      }
+
+      .cart-total {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="/">كليو كارت</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="/checkout">الرئيسية</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/products">المنتجات</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/checkout">
+                <div class="cart-badge">
+                  <i class="fas fa-shopping-cart"></i>
+                  <span class="cart-count" id="cartCount">0</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- قسم الخروج -->
+    <div class="container my-5">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="checkout-container mb-4">
+            <h2 class="section-title">عربة التسوق</h2>
+            <div id="cartItems">
+              <!-- ستتم تحميل عناصر السلة هنا -->
+            </div>
+          </div>
+
+          <div class="checkout-container mb-4">
+            <h2 class="section-title">معلومات التسليم</h2>
+            <form id="orderForm">
+              <div class="mb-3">
+                <label for="name" class="form-label">الاسم الكامل</label>
+                <input type="text" class="form-control" id="name" required />
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label">رقم الهاتف</label>
+                <input type="tel" class="form-control" id="phone" required />
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">البريد الإلكتروني</label>
+                <input type="email" class="form-control" id="email" required />
+              </div>
+              <div class="mb-3">
+                <label for="location" class="form-label">عنوان التسليم</label>
+                <textarea
+                  class="form-control"
+                  id="location"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="checkout-container">
+            <h2 class="section-title">ملخص الطلب</h2>
+            <div id="orderSummary">
+              <!-- سيتم تحميل ملخص الطلب هنا -->
+            </div>
+            <div class="total-section">
+              <div class="d-flex justify-content-between mb-2">
+                <span class="cart-summary">المجموع الفرعي:</span>
+                <span id="subtotal"> جنيه 0.00</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="cart-summary">رسوم التسليم:</span>
+                <span id="deliveryFee">مجانية</span>
+              </div>
+              <div class="d-flex justify-content-between cart-total">
+                <span>الإجمالي:</span>
+                <span id="total"> جنيه 0.00</span>
+              </div>
+            </div>
+          </div>
+          <button
+            type="submit"
+            action="submit"
+            form="orderForm"
+            id="placeOrderBtn"
+            class="btn btn-primary w-100 mt-4"
+          >
+            <i class="fas fa-lock me-2"></i>إتمام الطلب
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCSYxlif3lKA6T6xYFaLxwFWHVaDvzTuao",
+        authDomain: "cleo-cart.firebaseapp.com",
+        projectId: "cleo-cart",
+        storageBucket: "cleo-cart.firebasestorage.app",
+        messagingSenderId: "629512868399",
+        appId: "1:629512868399:web:523c3ff20cb129aff1ecda",
+        measurementId: "G-3PQTJLPL2B",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      async function submitOrder(orderData) {
+        try {
+          await addDoc(collection(db, "orders"), {
+            ...orderData,
+            timestamp: serverTimestamp(),
+          });
+          return true;
+        } catch (error) {
+          console.error("Error submitting order: ", error);
+          return false;
+        }
+      }
+
+      window.submitOrder = submitOrder;
+    </script>
+
+    <script>
+      function loadCart() {
+        const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+        const cartContainer = document.getElementById("cartItems");
+        const summaryContainer = document.getElementById("orderSummary");
+        let subtotal = 0;
+
+        cartContainer.innerHTML = "";
+        summaryContainer.innerHTML = "";
+
+        Object.entries(cart).forEach(([productId, item]) => {
+          const itemTotal = item.quantity * item.price;
+          subtotal += itemTotal;
+
+          cartContainer.innerHTML += `
+                    <div class="cart-item" data-id="${productId}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">${item.name}</h5>
+                                <p class="mb-0 text-muted"> جنيه ${
+                                  item.price
+                                } </p>
+                            </div>
+                            <div class="d-block align-items-center gap-3">
+                                <div class="quantity-control m-2">
+                                    <button class="quantity-btn" onclick="updateQuantity('${productId}', ${
+            item.quantity - 1
+          })">-</button>
+                                    <span>${item.quantity}</span>
+                                    <button class="quantity-btn" onclick="updateQuantity('${productId}', ${
+            item.quantity + 1
+          })">+</button>
+                                </div>
+                                <span class="fw-bold"> جنيه ${itemTotal.toFixed(
+                                  2
+                                )}</span>
+                                <i class="fas fa-trash remove-item m-2" onclick="removeItem('${productId}')"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+          summaryContainer.innerHTML += `
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="cart-summary">${item.name} x${
+            item.quantity
+          }</span>
+                        <span> جنيه ${itemTotal.toFixed(2)}</span>
+                    </div>
+                `;
+        });
+
+        const deliveryFee = 0;
+        const total = subtotal + deliveryFee;
+
+        document.getElementById(
+          "subtotal"
+        ).textContent = ` جنيه ${subtotal.toFixed(2)}`;
+        document.getElementById("total").textContent = ` جنيه ${total.toFixed(
+          2
+        )}`;
+
+        if (Object.keys(cart).length === 0) {
+          cartContainer.innerHTML =
+            '<p class="text-center text-muted my-4">Your cart is empty</p>';
+          summaryContainer.innerHTML =
+            '<p class="text-center text-muted my-4">No items in cart</p>';
+        }
+      }
+
+      function updateQuantity(productId, newQuantity) {
+        if (newQuantity < 1) return;
+
+        const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+        cart[productId].quantity = newQuantity;
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadCart();
+      }
+
+      function removeItem(productId) {
+        const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+        delete cart[productId];
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadCart();
+      }
+
+      document
+        .getElementById("orderForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+
+          if (Object.keys(cart).length === 0) {
+            alert("Your cart is empty!");
+            return;
+          }
+
+          const orderData = {
+            name: document.getElementById("name").value,
+            phone: document.getElementById("phone").value,
+            email: document.getElementById("email").value,
+            location: document.getElementById("location").value,
+            items: cart,
+            subtotal: parseFloat(
+              document
+                .getElementById("subtotal")
+                .textContent.replace(" جنيه ", "")
+            ),
+            deliveryFee: parseFloat(
+              document
+                .getElementById("deliveryFee")
+                .textContent.replace(" جنيه ", "")
+            ),
+            total: parseFloat(
+              document.getElementById("total").textContent.replace(" جنيه ", "")
+            ),
+          };
+
+          const success = await window.submitOrder(orderData);
+
+          if (success) {
+            localStorage.removeItem("cart");
+            alert(
+              "تم وضع الطلب بنجاح. سيتم التواصل معك في اقرب وقت لتأكيد الطلب."
+            );
+            // window.location.href = "/";
+          } else {
+            alert("Error placing order. Please try again.");
+          }
+        });
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+        const totalCount = Object.values(cart).reduce(
+          (acc, item) => acc + item.quantity,
+          0
+        );
+        document.getElementById("cartCount").textContent = totalCount;
+      }
+      updateCartCount();
+
+      loadCart();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

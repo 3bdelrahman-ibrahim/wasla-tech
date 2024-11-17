@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>كليو كارت - تفاصيل المنتج</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #ff7d1a;
+        --secondary-color: #ff6f00;
+        --background-color: #f8fafc;
+      }
+      body {
+        width: 100%;
+        background-color: var(--background-color);
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      }
+      .navbar {
+        background-color: white !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+      .navbar-brand {
+        font-weight: 600;
+        color: var(--primary-color) !important;
+      }
+      .nav-link {
+        color: #4b5563 !important;
+        font-weight: 500;
+      }
+      .nav-link:hover {
+        color: var(--primary-color) !important;
+      }
+      .container-topstyle {
+        justify-items: center;
+      }
+      .toast {
+        position: fixed;
+        top: 90px;
+        left: 20px;
+        z-index: 4;
+        display: none;
+      }
+      footer {
+        background-color: #343a40;
+        color: white;
+        padding: 2rem 0;
+        text-align: center;
+      }
+      .img-fluid-style {
+        width: 85%;
+        aspect-ratio: 1/1;
+        border-radius: 5%;
+        margin: 7.5%;
+        z-index: 3;
+      }
+      .icon-logo {
+        width: 50px;
+        height: 50px;
+        display: inline-block;
+        transition: transform 0.2s;
+      }
+      .icon-logo:hover {
+        transform: scale(1.1);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="/">كليو كارت</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="/">الرئيسية</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/products">المنتجات</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/checkout">
+                <div class="cart-badge">
+                  <i class="fas fa-shopping-cart"></i>
+                  <span class="cart-count" id="cartCount">0</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div
+      class="toast align-items-center text-white bg-success border-0"
+      role="alert"
+      id="toast"
+    >
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="toast-body text-end">تمت إضافة العنصر إلى السلة بنجاح!</div>
+        <a
+          href="/checkout"
+          class="text-decoration-none text-success bg-white rounded p-2 m-2"
+        >
+          إتمام الطلب
+        </a>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <img
+            src="https://i.sstatic.net/y9DpT.jpg"
+            class="img-fluid img-fluid-style sticky-top"
+            id="productImage"
+            alt=" "
+          />
+        </div>
+        <div class="col-md-6 mb-5 container-topstyle">
+          <h2 id="productName" class="mt-5"></h2>
+          <p id="productDetails"></p>
+          <p class="product-price mb-3"><span id="productPrice"></span> جنيه</p>
+          <button class="btn btn-primary" id="addToCartBtn">
+            أضف إلى السلة
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 كليو كارت. جميع الحقوق محفوظة.</p>
+        <p>تابعونا على</p>
+        <div class="social-icons">
+          <a class="icon-logo" href="https://www.facebook.com" target="_blank">
+            <img class="icon-logo" src="/images/i2.png" alt="Facebook" />
+          </a>
+          <a class="icon-logo" href="https://www.tiktok.com" target="_blank">
+            <img class="icon-logo" src="/images/i0.png" alt="TikTok" />
+          </a>
+          <a class="icon-logo" href="https://www.whatsapp.com" target="_blank">
+            <img class="icon-logo" src="/images/i4.png" alt="WhatsApp" />
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCSYxlif3lKA6T6xYFaLxwFWHVaDvzTuao",
+        authDomain: "cleo-cart.firebaseapp.com",
+        projectId: "cleo-cart",
+        storageBucket: "cleo-cart.firebasestorage.app",
+        messagingSenderId: "629512868399",
+        appId: "1:629512868399:web:523c3ff20cb129aff1ecda",
+        measurementId: "G-3PQTJLPL2B",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      async function loadProduct() {
+        const urlPath = window.location.pathname;
+        const productId = urlPath.substring(urlPath.lastIndexOf("/"));
+
+        try {
+          const productDoc = await getDoc(doc(db, "products", productId));
+          if (productDoc.exists()) {
+            const product = productDoc.data();
+
+            if (!product.name || !product.discount) {
+              window.location.href = "/";
+              return;
+            }
+
+            document.getElementById("productName").textContent = product.name;
+            document.getElementById("productDetails").textContent =
+              product.details;
+            document.getElementById("productPrice").textContent =
+              product.discount;
+            document.getElementById("productImage").src = product.image;
+
+            document.getElementById("addToCartBtn").onclick = function () {
+              addToCart(productId, product.name, product.discount);
+            };
+          } else {
+            console.error("لا يوجد منتج بهذا المعرف");
+          }
+        } catch (error) {
+          console.error("خطأ في تحميل المنتج: ", error);
+        }
+      }
+
+      window.loadProduct = loadProduct;
+      loadProduct();
+    </script>
+
+    <script>
+      let notificationShown = false;
+
+      function addToCart(productId, productName, productPrice) {
+        const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+        if (!cart[productId]) {
+          cart[productId] = {
+            name: productName,
+            quantity: 1,
+            price: productPrice,
+          };
+          showToast();
+        } else {
+          cart[productId] = {
+            name: productName,
+            quantity: 1,
+            price: productPrice,
+          };
+          showToast();
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+        showToast();
+      }
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+        const totalCount = Object.values(cart).reduce(
+          (acc, item) => acc + item.quantity,
+          0
+        );
+        document.getElementById("cartCount").textContent = totalCount;
+      }
+
+      function showToast() {
+        const toast = document.getElementById("toast");
+        if (!notificationShown) {
+          toast.style.display = "block";
+          const bootstrapToast = new bootstrap.Toast(toast);
+          bootstrapToast.show();
+          notificationShown = true;
+        }
+      }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+  </body>
+</html>
