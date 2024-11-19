@@ -284,6 +284,7 @@ const products = [
     // Set the original price and discounted price
     document.getElementById("productPrice").textContent = `${product.price}`;
     document.getElementById("productDiscount").textContent = `${product.discount}`;
+          document.getElementById("productImage").src = product.image;
 
     // Calculate and set the discount percentage
     const discountPercentage = Math.round(((product.price - product.discount) / product.price) * 100);
