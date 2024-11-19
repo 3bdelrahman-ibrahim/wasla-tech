@@ -85,6 +85,11 @@
         color: #6c757d;
         margin-right: 10px;
       }
+      #productPrice{
+        text-decoration: line-through;
+        color: #6c757d;
+      }
+
     </style>
   </head>
   <body>
@@ -152,10 +157,11 @@
             سعر المنتج:
 
             <span id="productDiscount"></span>  
-
+            جنيه
+            -
             بدلاً من
             <span id="productPrice"></span>  
-
+جنيه
             <div class="price-discount" id="discountPercentage"></div>
                       </div>
           <button class="btn btn-primary" id="addToCartBtn">
@@ -276,8 +282,8 @@ const products = [
     document.getElementById("productDetails").innerHTML = descriptionLines.join('<br>');
 
     // Set the original price and discounted price
-    document.getElementById("productPrice").textContent = `جنيه ${product.price}`;
-    document.getElementById("productDiscount").textContent = `جنيه ${product.discount}`;
+    document.getElementById("productPrice").textContent = `${product.price}`;
+    document.getElementById("productDiscount").textContent = `${product.discount}`;
 
     // Calculate and set the discount percentage
     const discountPercentage = Math.round(((product.price - product.discount) / product.price) * 100);
