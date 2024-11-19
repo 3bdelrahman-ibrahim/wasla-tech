@@ -135,6 +135,77 @@
         font-weight: 600;
         color: #1f2937;
       }
+      .cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item img.cart-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
+}
+
+.cart-item .d-flex {
+  display: flex;
+  align-items: center;
+}
+
+.cart-item h5 {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.cart-item p {
+  font-size: 14px;
+  color: #777;
+}
+
+.cart-item .quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-item .quantity-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.cart-item .quantity-btn:hover {
+  background-color: #0056b3;
+}
+
+.cart-item .fw-bold {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.cart-item .remove-item {
+  color: #dc3545;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.cart-item .remove-item:hover {
+  color: #c82333;
+}
+
     </style>
   </head>
   <body>
@@ -299,29 +370,27 @@
           subtotal += itemTotal;
 
           cartContainer.innerHTML += `
-                <div class="cart-item" data-id="${productId}">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="mb-1">${item.name}</h5>
-                            <p class="mb-0 text-muted"> جنيه ${item.price} </p>
-                        </div>
-                        <div class="d-block align-items-center gap-3">
-                            <div class="quantity-control m-2">
-                                <button class="quantity-btn" onclick="updateQuantity('${productId}', ${
-            item.quantity - 1
-          })">-</button>
-                                <span>${item.quantity}</span>
-                                <button class="quantity-btn" onclick="updateQuantity('${productId}', ${
-            item.quantity + 1
-          })">+</button>
-                            </div>
-                            <span class="fw-bold"> جنيه ${itemTotal.toFixed(
-                              2
-                            )}</span>
-                            <i class="fas fa-trash remove-item m-2" onclick="removeItem('${productId}')"></i>
-                        </div>
-                    </div>
-                </div>
+          <div class="cart-item" data-id="${productId}">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex">
+      <img src="${item.image}" alt="${item.name}" class="cart-item-image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+      <div>
+        <h5 class="mb-1">${item.name}</h5>
+        <p class="mb-0 text-muted">جنيه ${item.price}</p>
+      </div>
+    </div>
+    <div class="d-block align-items-center gap-3">
+      <div class="quantity-control m-2">
+        <button class="quantity-btn" onclick="updateQuantity('${productId}', ${item.quantity - 1})">-</button>
+        <span>${item.quantity}</span>
+        <button class="quantity-btn" onclick="updateQuantity('${productId}', ${item.quantity + 1})">+</button>
+      </div>
+      <span class="fw-bold">جنيه ${itemTotal.toFixed(2)}</span>
+      <i class="fas fa-trash remove-item m-2" onclick="removeItem('${productId}')"></i>
+    </div>
+  </div>
+</div>
+
             `;
 
           summaryContainer.innerHTML += `
