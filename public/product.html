@@ -298,7 +298,7 @@ const products = [
 
        let notificationShown = false;
 
-       function addToCart(productId, productName, productPrice) {
+       function addToCart(productId, productName, productPrice , productImage) {
   // Get the current cart from localStorage or initialize an empty object if it doesn't exist
   const cart = JSON.parse(localStorage.getItem("cart") || "{}");
 

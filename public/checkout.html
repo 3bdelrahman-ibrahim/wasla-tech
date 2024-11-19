@@ -456,17 +456,12 @@
             `;
 
           summaryContainer.innerHTML += `
-                <div class="col-md-3">
-        <img src="${item.image}" alt="${item.name}" class="img-fluid" />
-      </div>
-      <div class="col-md-6">
-        <h5>${item.name}</h5>
-        <p>السعر: ${item.price} جنيه</p>
-        <p>الكمية: ${item.quantity}</p>
-      </div>
-      <div class="col-md-3 text-end">
-        <p>إجمالي: ${item.price * item.quantity} جنيه</p>
-      </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="cart-summary">${item.name} x${
+            item.quantity
+          }</span>
+                    <span> جنيه ${itemTotal.toFixed(2)}</span>
+                </div>
             `;
         });
 
