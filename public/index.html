@@ -180,6 +180,15 @@
         padding: 2rem 0;
         text-align: center;
       }
+      .product-discountPercentage{
+  background-color: #f44336; /* Red background for discount */
+  color: white; /* White text color */
+  padding: 5px 10px; /* Padding inside the element */
+  border-radius: 5px; /* Rounded corners */
+  font-weight: bold; /* Bold text */
+  display: inline-block; /* To fit the content properly */
+  font-size: 16px; /* Font size */
+}
     </style>
   </head>
   <body>
@@ -484,8 +493,9 @@
                                                           <h5 class="card-title">${product.name}</h5>
                           
                                                           <p class="product-price mb-3">جنيه ${product.discount} <span class="discount-price">جنيه ${product.price}</span></p>
+                                                          <p class="product-discountPercentage mb-3">خصم ${discountPercentage}%</p>
 
- ${discountPercentage.toFixed(2)}%
+
                                                           <button class="btn btn-primary mt-auto" onclick="window.location.href='/product/${product.id}'">عرض المنتج</button>
 
 
