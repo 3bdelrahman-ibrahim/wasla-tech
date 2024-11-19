@@ -299,6 +299,7 @@
 
   .cart-item .d-flex .cart-item-image {
     width: 100px; /* Adjust image size */
+    height: 100px; /* Adjust image size */
     margin-right: 0;
     margin-bottom: 10px;
   }
@@ -497,7 +498,7 @@
         <p class="mb-0 text-muted">جنيه ${item.price}</p>
       </div>
     </div>
-    <div class="d-flex flex-column align-items-end gap-2">
+    <div class="d-flex flex-column align-items-center gap-2">
       <div class="quantity-control m-2">
         <button class="quantity-btn" onclick="updateQuantity('${productId}', ${item.quantity - 1})">-</button>
         <span>${item.quantity}</span>
