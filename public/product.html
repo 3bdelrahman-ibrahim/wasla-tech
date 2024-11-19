@@ -74,6 +74,17 @@
       .icon-logo:hover {
         transform: scale(1.1);
       }
+      .price-discount {
+        font-size: 1.25rem;
+        color: #ff6f00;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+      .original-price {
+        text-decoration: line-through;
+        color: #6c757d;
+        margin-right: 10px;
+      }
     </style>
   </head>
   <body>
@@ -93,9 +104,6 @@
             <li class="nav-item">
               <a class="nav-link active" href="/">الرئيسية</a>
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="/products">المنتجات</a>
-            </li> -->
           </ul>
           <ul class="navbar-nav">
             <li class="nav-item">
@@ -140,7 +148,10 @@
         <div class="col-md-6 mb-5 container-topstyle">
           <h2 id="productName" class="mt-5"></h2>
           <p id="productDetails"></p>
-          <p class="product-price mb-3"><span id="productPrice"></span> جنيه</p>
+          <div class="product-price mb-3">
+            <span id="productPrice"></span> جنيه
+            <div class="price-discount" id="discountPercentage"></div>
+          </div>
           <button class="btn btn-primary" id="addToCartBtn">
             أضف إلى السلة
           </button>
@@ -150,7 +161,7 @@
 
     <footer>
       <div class="container">
-        <p>&copy; 2024     . جميع الحقوق محفوظة.</p>
+        <p>&copy; 2024 . جميع الحقوق محفوظة.</p>
         <p>تابعونا على</p>
         <div class="social-icons">
           <a class="icon-logo" href="https://www.facebook.com" target="_blank">
@@ -171,8 +182,8 @@ const products = [
   {
     id: "1",
     name: "ساعة ذكية",
-    price: 300,
-    discount: 250,
+    price: 1350,
+    discount: 1199.99,
     image: "https://moutech-eg.vercel.app/images/1.jpg",
     description: `  
       - تصميم أنيق وعصري يناسب كل الأذواق.  
@@ -198,8 +209,8 @@ const products = [
   {
     id: "2",
     name: "سماعة بلوتوث",
-    price: 150,
-    discount: 120,
+    price: 750,
+    discount: 499.99,
     image: "https://moutech-eg.vercel.app/images/1.jpg",
     description: `  
       - تصميم مريح وخفيف للراحة أثناء الاستخدام الطويل.  
@@ -224,8 +235,8 @@ const products = [
   {
     id: "3",
     name: "مكبر صوت محمول",
-    price: 200,
-    discount: 180,
+    price: 600,
+    discount: 449.99,
     image: "https://moutech-eg.vercel.app/images/1.jpg",
     description: `  
       - مكبر صوت صغير الحجم مع صوت قوي وواضح.  
@@ -247,11 +258,9 @@ const products = [
     `,
   },
 ];
-
-
       function loadProduct() {
         const urlPath = window.location.pathname;
-        const productId = urlPath.substring(urlPath.lastIndexOf("/") + 1); // Extract product ID from URL
+        const productId = urlPath.substring(urlPath.lastIndexOf("/") + 1); 
 
         const product = products.find((p) => p.id === productId);
 
@@ -261,70 +270,42 @@ const products = [
 
             document.getElementById("productDetails").innerHTML = descriptionLines.join('<br>');
 
-          document.getElementById(
-            "productPrice"
-          ).textContent = `جنيه ${product.discount}`;
+          document.getElementById("productPrice").textContent = `جنيه ${product.discount}`;
           document.getElementById("productImage").src = product.image;
 
-          document.getElementById("addToCartBtn").onclick = function () {
-            addToCart(productId, product.name, product.discount);
-          };
-        } else {
-          console.error("لا يوجد منتج بهذا المعرف");
-          window.location.href = "/"; // Redirect to homepage if product not found
+          const discountPercentage = Math.round(
+            ((product.price - product.discount) / product.price) * 100
+          );
+          document.getElementById("discountPercentage").textContent = `خصم ${discountPercentage}%`;
         }
       }
 
-      window.loadProduct = loadProduct;
       loadProduct();
-    </script>
 
-    <script>
-      let notificationShown = false;
+      function addToCart(product) {
+        const cartCount = document.getElementById("cartCount");
+        let count = parseInt(cartCount.textContent);
+        cartCount.textContent = count + 1;
 
-      function addToCart(productId, productName, productPrice) {
-        const cart = JSON.parse(localStorage.getItem("cart") || "{}");
-        if (!cart[productId]) {
-          cart[productId] = {
-            name: productName,
-            quantity: 1,
-            price: productPrice,
-          };
-          showToast();
-        } else {
-          cart[productId] = {
-            name: productName,
-            quantity: 1, // Increase quantity if already in cart
-            //     quantity: cart[productId].quantity + 1, // Increase quantity if already in cart
-            price: productPrice,
-          };
-          showToast();
-        }
-        localStorage.setItem("cart", JSON.stringify(cart));
-        updateCartCount();
-      }
-
-      function updateCartCount() {
-        const cart = JSON.parse(localStorage.getItem("cart") || "{}");
-        const totalCount = Object.values(cart).reduce(
-          (acc, item) => acc + item.quantity,
-          0
-        );
-        document.getElementById("cartCount").textContent = totalCount;
-      }
-
-      function showToast() {
         const toast = document.getElementById("toast");
-        if (!notificationShown) {
-          toast.style.display = "block";
-          const bootstrapToast = new bootstrap.Toast(toast);
-          bootstrapToast.show();
-          notificationShown = true;
-        }
+        toast.style.display = "block";
+        setTimeout(function () {
+          toast.style.display = "none";
+        }, 3000);
       }
+
+      document.getElementById("addToCartBtn").addEventListener("click", function () {
+        const productId = window.location.pathname.split("/").pop();
+        const product = products.find((p) => p.id === productId);
+        addToCart(product);
+      });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+    ></script>
   </body>
 </html>
