@@ -150,6 +150,7 @@
           <p id="productDetails"></p>
           <div class="product-price mb-3">
             <span id="productPrice"></span> جنيه
+            <span id="productdiscount "></span> جنيه
             <div class="price-discount" id="discountPercentage"></div>
           </div>
           <button class="btn btn-primary" id="addToCartBtn">
@@ -266,17 +267,16 @@ const products = [
 
         if (product) {
           document.getElementById("productName").textContent = product.name;
-            const descriptionLines = product.description.split('\n').filter(line => line.trim() !== '');
+    const descriptionLines = product.description.split('\n').filter(line => line.trim() !== '');
+    document.getElementById("productDetails").innerHTML = descriptionLines.join('<br>');
 
-            document.getElementById("productDetails").innerHTML = descriptionLines.join('<br>');
+    // Set the original price and discounted price
+    document.getElementById("productPrice").textContent = `جنيه ${product.price}`;
+    document.getElementById("productDiscount").textContent = `جنيه ${product.discount}`;
 
-          document.getElementById("productPrice").textContent = `جنيه ${product.discount}`;
-          document.getElementById("productImage").src = product.image;
-
-          const discountPercentage = Math.round(
-            ((product.price - product.discount) / product.price) * 100
-          );
-          document.getElementById("discountPercentage").textContent = `خصم ${discountPercentage}%`;
+    // Calculate and set the discount percentage
+    const discountPercentage = Math.round(((product.price - product.discount) / product.price) * 100);
+    document.getElementById("discountPercentage").textContent = `خصم ${discountPercentage}%`;
         }
       }
 
