@@ -306,6 +306,56 @@ box-shadow: #1f293754 0px 0px 10px;
     cursor: pointer;
   }
 }
+.cart-item {
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+}
+
+.cart-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-btn {
+  width: 30px;
+  height: 30px;
+  background-color: #f0f0f0;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.remove-item {
+  cursor: pointer;
+  color: #e74c3c;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.align-items-end {
+  align-items: flex-end;
+}
+
+.gap-2 {
+  gap: 8px;
+}
 
     </style>
   </head>
@@ -467,7 +517,7 @@ box-shadow: #1f293754 0px 0px 10px;
           subtotal += itemTotal;
 
           cartContainer.innerHTML += `
-        <div class="cart-item" data-id="${productId}">
+   <div class="cart-item" data-id="${productId}">
   <div class="d-flex justify-content-between align-items-center">
     <div class="d-flex">
       <img src="${item.image}" alt="${item.name}" class="cart-item-image" />
@@ -475,7 +525,7 @@ box-shadow: #1f293754 0px 0px 10px;
         <h5 class="mb-1">${item.name}</h5>
       </div>
     </div>
-    <div class="d-flex flex-column align-items-center gap-2">
+    <div class="d-flex flex-column align-items-end gap-2">
       <div class="quantity-control m-2">
         <button class="quantity-btn" onclick="updateQuantity('${productId}', ${item.quantity - 1})">-</button>
         <span>${item.quantity}</span>
