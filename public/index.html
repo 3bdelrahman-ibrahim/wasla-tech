@@ -479,11 +479,19 @@
                       <div class="card">
                           <img src="${product.image}" class="card-img-top" alt="${product.name}">
                           <div class="card-body d-flex flex-column">
-                              <h5 class="card-title">${product.name}</h5>
-                              <p class="product-price mb-3"> جنيه ${product.discount} <span class="discount-price">رمز <sup>$
-                            ${discountPercentage.toFixed(2)}%</sup> على جنيه ${product.price}</span></p>
-<button class="btn btn-primary mt-auto" onclick="window.location.href='/product/${product.id}'">عرض المنتج</button>
-                          </div>
+
+
+                                                          <h5 class="card-title">${product.name}</h5>
+                          
+                                                          <p class="product-price mb-3">جنيه ${product.discount} <span class="discount-price">جنيه ${product.price}</span></p>
+
+ ${discountPercentage.toFixed(2)}%
+                                                          <button class="btn btn-primary mt-auto" onclick="window.location.href='/product/${product.id}'">عرض المنتج</button>
+
+
+
+
+                           </div>
                       </div>
                   </div>`;
         productsContainer.innerHTML += productCard;
