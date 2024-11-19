@@ -1,16 +1,20 @@
 {
   "routes": [
     {
-      "src": "/products",
-      "dest": "/products.html"
-    },
-    {
-      "src": "/contact",
-      "dest": "/contact.html"
+      "src": "/product/(.*)",
+      "dest": "/product.html"
     },
     {
       "src": "/checkout",
       "dest": "/checkout.html"
+    },
+    {
+      "src": "/products",
+      "dest": "/products.html"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/images/$1"
     },
     {
       "src": "/(.*)",

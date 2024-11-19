@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cleo Cart - Checkout</title>
+    <title>makkah - Checkout</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -141,7 +141,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
       <div class="container">
-        <a class="navbar-brand" href="/">كليو كارت</a>
+        <a class="navbar-brand" href="/">مكه </a>
         <button
           class="navbar-toggler"
           type="button"
@@ -153,11 +153,11 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link active" href="/checkout">الرئيسية</a>
+              <a class="nav-link active" href="/">الرئيسية</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="/products">المنتجات</a>
-            </li>
+            </li> -->
           </ul>
           <ul class="navbar-nav">
             <li class="nav-item">
@@ -300,41 +300,39 @@
           subtotal += itemTotal;
 
           cartContainer.innerHTML += `
-                    <div class="cart-item" data-id="${productId}">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="mb-1">${item.name}</h5>
-                                <p class="mb-0 text-muted"> جنيه ${
-                                  item.price
-                                } </p>
-                            </div>
-                            <div class="d-block align-items-center gap-3">
-                                <div class="quantity-control m-2">
-                                    <button class="quantity-btn" onclick="updateQuantity('${productId}', ${
+                <div class="cart-item" data-id="${productId}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1">${item.name}</h5>
+                            <p class="mb-0 text-muted"> جنيه ${item.price} </p>
+                        </div>
+                        <div class="d-block align-items-center gap-3">
+                            <div class="quantity-control m-2">
+                                <button class="quantity-btn" onclick="updateQuantity('${productId}', ${
             item.quantity - 1
           })">-</button>
-                                    <span>${item.quantity}</span>
-                                    <button class="quantity-btn" onclick="updateQuantity('${productId}', ${
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity('${productId}', ${
             item.quantity + 1
           })">+</button>
-                                </div>
-                                <span class="fw-bold"> جنيه ${itemTotal.toFixed(
-                                  2
-                                )}</span>
-                                <i class="fas fa-trash remove-item m-2" onclick="removeItem('${productId}')"></i>
                             </div>
+                            <span class="fw-bold"> جنيه ${itemTotal.toFixed(
+                              2
+                            )}</span>
+                            <i class="fas fa-trash remove-item m-2" onclick="removeItem('${productId}')"></i>
                         </div>
                     </div>
-                `;
+                </div>
+            `;
 
           summaryContainer.innerHTML += `
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="cart-summary">${item.name} x${
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="cart-summary">${item.name} x${
             item.quantity
           }</span>
-                        <span> جنيه ${itemTotal.toFixed(2)}</span>
-                    </div>
-                `;
+                    <span> جنيه ${itemTotal.toFixed(2)}</span>
+                </div>
+            `;
         });
 
         const deliveryFee = 0;
@@ -353,6 +351,9 @@
           summaryContainer.innerHTML =
             '<p class="text-center text-muted my-4">No items in cart</p>';
         }
+
+        // Update cart count
+        updateCartCount();
       }
 
       function updateQuantity(productId, newQuantity) {
@@ -415,16 +416,14 @@
             alert("Error placing order. Please try again.");
           }
         });
+
       function updateCartCount() {
         const cart = JSON.parse(localStorage.getItem("cart") || "{}");
-        const totalCount = Object.values(cart).reduce(
-          (acc, item) => acc + item.quantity,
-          0
-        );
+        const totalCount = Object.keys(cart).length; // Count unique items by the number of keys (unique product IDs)
         document.getElementById("cartCount").textContent = totalCount;
       }
-      updateCartCount();
 
+      updateCartCount();
       loadCart();
     </script>
 
