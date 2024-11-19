@@ -219,8 +219,10 @@ const products = [
 
         if (product) {
           document.getElementById("productName").textContent = product.name;
-          document.getElementById("productDetails").textContent =
-            product.description;
+            const descriptionLines = product.description.split('\n').filter(line => line.trim() !== '');
+
+            document.getElementById("productDetails").innerHTML = descriptionLines.join('<br>');
+
           document.getElementById(
             "productPrice"
           ).textContent = `جنيه ${product.discount}`;
